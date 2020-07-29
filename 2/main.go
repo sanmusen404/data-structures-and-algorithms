@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -11,18 +12,27 @@ func main() {
 	fmt.Scanln(&n)
 
 	arr := initArr(n)
-
-	arr1 := make([]int, len(arr))
-	copy(arr1, arr)
-	t1 := time.Now()
-	bubbleSort(arr1)
-	fmt.Println("冒泡排序:t = ", time.Since(t1))
-
-	arr2 := make([]int, len(arr))
-	copy(arr2, arr)
-	t2 := time.Now()
-	insertionSort(arr2)
-	fmt.Println("插入排序:t = ", time.Since(t2))
+	wg := sync.WaitGroup{}
+	//
+	wg.Add(1)
+	go func() {
+		arr1 := make([]int, len(arr))
+		copy(arr1, arr)
+		t1 := time.Now()
+		bubbleSort(arr1)
+		fmt.Println("冒泡排序:t = ", time.Since(t1))
+		wg.Done()
+	}()
+	//
+	wg.Add(1)
+	go func() {
+		arr2 := make([]int, len(arr))
+		copy(arr2, arr)
+		t2 := time.Now()
+		insertionSort(arr2)
+		fmt.Println("插入排序:t = ", time.Since(t2))
+		wg.Done()
+	}()
 
 	// arr3 := arr
 	// t3 := time.Now()
@@ -35,6 +45,8 @@ func main() {
 	// arr5 := arr
 	// t5 := time.Now()
 	// fmt.Println("快速排序:t = ", time.Since(t5))
+
+	wg.Wait()
 }
 
 //打印数组
