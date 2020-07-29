@@ -12,14 +12,17 @@ func main() {
 
 	arr := initArr(n)
 
-	arr1 := arr
+	arr1 := make([]int, len(arr))
+	copy(arr1, arr)
 	t1 := time.Now()
 	bubbleSort(arr1)
 	fmt.Println("冒泡排序:t = ", time.Since(t1))
 
-	// arr2 := arr
-	// t2 := time.Now()
-	// fmt.Println("插入排序:t = ", time.Since(t2))
+	arr2 := make([]int, len(arr))
+	copy(arr2, arr)
+	t2 := time.Now()
+	insertionSort(arr2)
+	fmt.Println("插入排序:t = ", time.Since(t2))
 
 	// arr3 := arr
 	// t3 := time.Now()
@@ -67,11 +70,16 @@ func bubbleSort(arr []int) {
 }
 
 //插入排序
+//时间复杂度：o(n^2)
+//空间复杂度：-
+//是否稳定：稳定
 func insertionSort(arr []int) {
-	for i := 0; i < len(arr); i++ {
-		for j := i; j < len(arr); j++ {
-			if arr[i] > arr[j] {
-				arr[i], arr[j] = arr[j], arr[i]
+	for i := 1; i < len(arr); i++ {
+		for j := 0; j < i; j++ {
+			if arr[i] < arr[j] {
+				temp := arr[i]
+				copy(arr[j+1:i+1], arr[j:i])
+				arr[j] = temp
 			}
 		}
 	}
