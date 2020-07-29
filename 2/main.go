@@ -34,9 +34,16 @@ func main() {
 		wg.Done()
 	}()
 
-	// arr3 := arr
-	// t3 := time.Now()
-	// fmt.Println("选择排序:t = ", time.Since(t3))
+	//
+	wg.Add(1)
+	go func() {
+		arr3 := make([]int, len(arr))
+		copy(arr3, arr)
+		t3 := time.Now()
+		selectionSort(arr3)
+		fmt.Println("选择排序:t = ", time.Since(t3))
+		wg.Done()
+	}()
 
 	// arr4 := arr
 	// t4 := time.Now()
@@ -98,8 +105,19 @@ func insertionSort(arr []int) {
 }
 
 //选择排序
+//时间复杂度：o(n^2)
+//空间复杂度：-
+//是否稳定：稳定
 func selectionSort(arr []int) {
-
+	for i := 0; i < len(arr); i++ {
+		minIndex := i
+		for j := i; j < len(arr); j++ {
+			if arr[j] < arr[minIndex] {
+				minIndex = j
+			}
+		}
+		arr[i], arr[minIndex] = arr[minIndex], arr[i]
+	}
 }
 
 //归并排序
