@@ -7,6 +7,7 @@
 - [ ] 队列
 
 ## 排序算法
+图形化演示：[https://visualgo.net/zh/sorting](https://visualgo.net/zh/sorting)
 - [x] 冒泡排序
 - [x] 插入排序
 - [x] 选择排序
