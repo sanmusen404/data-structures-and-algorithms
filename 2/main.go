@@ -13,7 +13,7 @@ func main() {
 
 	arr := initArr(n)
 	wg := sync.WaitGroup{}
-	//
+	//冒泡
 	wg.Add(1)
 	go func() {
 		arr1 := make([]int, len(arr))
@@ -23,7 +23,7 @@ func main() {
 		fmt.Println("冒泡排序:t = ", time.Since(t1))
 		wg.Done()
 	}()
-	//
+	//插入
 	wg.Add(1)
 	go func() {
 		arr2 := make([]int, len(arr))
@@ -33,8 +33,7 @@ func main() {
 		fmt.Println("插入排序:t = ", time.Since(t2))
 		wg.Done()
 	}()
-
-	//
+	//选择
 	wg.Add(1)
 	go func() {
 		arr3 := make([]int, len(arr))
@@ -44,10 +43,16 @@ func main() {
 		fmt.Println("选择排序:t = ", time.Since(t3))
 		wg.Done()
 	}()
-
-	// arr4 := arr
-	// t4 := time.Now()
-	// fmt.Println("归并排序:t = ", time.Since(t4))
+	//归并
+	wg.Add(1)
+	go func() {
+		arr4 := make([]int, len(arr))
+		copy(arr4, arr)
+		t4 := time.Now()
+		mergeSort(arr4)
+		fmt.Println("归并排序:t = ", time.Since(t4))
+		wg.Done()
+	}()
 
 	// arr5 := arr
 	// t5 := time.Now()
@@ -77,7 +82,7 @@ func initArr(n int) []int {
 //冒泡排序
 //时间复杂度：o(n^2)
 //空间复杂度：-
-//是否稳定：稳定
+//是否稳定：是
 func bubbleSort(arr []int) {
 	for i := 0; i < len(arr); i++ {
 		for j := i; j < len(arr); j++ {
@@ -91,7 +96,7 @@ func bubbleSort(arr []int) {
 //插入排序
 //时间复杂度：o(n^2)
 //空间复杂度：-
-//是否稳定：稳定
+//是否稳定：是
 func insertionSort(arr []int) {
 	for i := 1; i < len(arr); i++ {
 		for j := 0; j < i; j++ {
@@ -107,7 +112,7 @@ func insertionSort(arr []int) {
 //选择排序
 //时间复杂度：o(n^2)
 //空间复杂度：-
-//是否稳定：稳定
+//是否稳定：否
 func selectionSort(arr []int) {
 	for i := 0; i < len(arr); i++ {
 		minIndex := i
@@ -121,11 +126,47 @@ func selectionSort(arr []int) {
 }
 
 //归并排序
+//时间复杂度：o(log(n))
+//空间复杂度：o(n)
+//是否稳定：是
 func mergeSort(arr []int) {
+	l := len(arr)
+	if l <= 1 {
+		return
+	}
 
+	mid := l / 2
+	arr1 := arr[0:mid]
+	arr2 := arr[mid:]
+	mergeSort(arr1)
+	mergeSort(arr2)
+
+	tempArr := make([]int, 0)
+	i, j := 0, 0
+	for {
+		if i >= len(arr1) {
+			tempArr = append(tempArr, arr2[j:]...)
+			break
+		}
+		if j >= len(arr2) {
+			tempArr = append(tempArr, arr1[i:]...)
+			break
+		}
+		if arr1[i] < arr2[j] {
+			tempArr = append(tempArr, arr1[i])
+			i++
+		} else {
+			tempArr = append(tempArr, arr2[j])
+			j++
+		}
+	}
+	copy(arr, tempArr)
 }
 
 //快速排序
+//时间复杂度：o(log(n))
+//空间复杂度：-
+//是否稳定：否
 func quickSort(arr []int) {
-
+	// pivot := 0
 }
