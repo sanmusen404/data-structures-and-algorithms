@@ -21,7 +21,7 @@ func main() {
 
 func initArr() []int {
 	arr := make([]int, 0)
-	for i := 0; i < math.MaxInt8; i++ {
+	for i := 0; i < math.MaxInt16; i++ {
 		arr = append(arr, i)
 	}
 	return arr
